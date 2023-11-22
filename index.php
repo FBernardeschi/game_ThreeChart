@@ -2,6 +2,10 @@
 
 session_start();
 
+require_once('Curl.php');
+
+use Helpers\Curl;
+
 // Тайтл
 $title = 'ИТ-Полигон: ТриБуквы';
 
@@ -31,25 +35,38 @@ $gen_str = genChar();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    // Конкатенируем то что прислал пользователь с тем что было сгенерировано
+    // Избавляемся от глобальной переменной $_POST
+    // копируя всё в свою переменную
     $data = $_POST;
 
-    var_dump($data);
     // Получаем сгенерированное, поскольку то уже перезаписалось
     $gen = $data['gen'];
 
-    // Добавляем слова в сессию
-    $_SESSION['word_1'] = $data['one'] . $data['two'] . $gen;
-    $_SESSION['word_2'] = $gen . $data['three'] . $data['four'];
+    // Объеденяем символы в слово
+    $word_1 = $data['one'] . $data['two'] . $gen;
+    $word_2 = $gen . $data['three'] . $data['four'];
 
-    // Слово для третьего уровня
-    $_SESSION['word_level_3'] = $data['one'] . $data['two'] . $gen . $data['three'] . $data['four'];
+    // Инстансируем класс проверок
+    $check = new Curl;
 
-    // Перекидываем на второй уровень
-    header('Location: level-2.php');
+    // Делаем проверки каждого слова и объеденяе в общий массив
+    $result = array_merge($check->getWord($word_1), $check->getWord($word_2));
 
-    // Убиваем дальнейшее выполнение скрипта
-    die();
+    if(empty($result)) {
+        // Если результат проверок пустой
+        // добавляем слова в сессию
+        $_SESSION['word_1'] = $word_1;
+        $_SESSION['word_2'] = $word_2;
+
+        // Добавляем в сессию лово для третьего уровня
+        $_SESSION['word_level_3'] = $data['one'] . $data['two'] . $gen . $data['three'] . $data['four'];
+
+        // Перекидываем на второй уровень
+        header('Location: level-2.php');
+
+        // Убиваем дальнейшее выполнение скрипта
+        die();
+    }
 }
 
 ?>
@@ -78,6 +95,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </ul>
                     </div>    
                 </div>
+                <?php if(!empty($result)) {
+                    foreach($result as $res) {
+                        echo '<p class="error">' . $res . '</p>';
+                    }
+                } ?>
                 <form action="" method="POST">
                     <div class="block-inputs">
                         <input name='one' class="inp" type="text" maxlength="1" autocomplete="off">

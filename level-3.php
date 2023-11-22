@@ -3,8 +3,10 @@
 session_start();
 
 require_once('Helpers.php');
+require_once('Curl.php');
 
 use Helpers\Checker;
+use Helpers\Curl;
 
 // Заголовок
 $title = 'Уровень №3';
@@ -34,9 +36,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     $word_input = $one . $two . $three . $four . $five . $six;
 
     // Инстансируем класс хелпер и вызываем
-    // метод проверки
+    // метод проверки на количество одинаковых
+    // символов
     $check = new Checker;
-    $result = $check->checkerLevel_3($word, $word_input);
+    $check_2 = new Curl;
+    $result = array_merge($check->checkerLevel_3($word, $word_input), $check_2->getWord($word_input));
 
     if(empty($result)) {
 

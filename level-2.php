@@ -3,11 +3,16 @@
 session_start();
 
 require_once('Helpers.php');
+require_once('Curl.php');
 
 use Helpers\Checker;
+use Helpers\Curl;
 
 // Заголовок
 $title = 'Уровень №2';
+
+// Пустой массив для ошибок
+$result = [];
 
 // Принимаем то, что пришло из сессии
 $word_1 = $_SESSION['word_1'];
@@ -20,13 +25,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Конкатенируем все символы в слово
     $word = $data['chair-1'] . $data['chair-2'] . $data['chair-3'] . $data['chair-4'] . $data['chair-5'];
 
-    // Создаём инстанс класса с проверками
+    // Создаём инстанс класса с проверками на
+    // Количество одинаковых символов
     $check = new Checker;
 
-    // Вызываем метод проверки отличия на 1 символ
-    $result = $check->checkerLevel_2($word_1, $word_2, $word);
+    // Инстансируем класс Curl с проверкой на существование
+    // слова через Яндекс словарь
+    $checkWord = new Curl;
 
-    if(count($result) < 2) {
+    // Сливаем результат проверок в результирующий массив
+    $result = array_merge($check->checkerLevel_2($word_1, $word_2, $word), $checkWord->getWord($word));
+
+    // Смотри описание ниже
+    if(count($result) === 0) {
 
         // Если пришёл пустой массив без ошибок, 
         // перекидываем пользователя на уровень №3,
@@ -36,7 +47,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
         die();
     }
 }
-
 
 ?>
 

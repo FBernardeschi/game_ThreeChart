@@ -26,25 +26,12 @@ body {
     justify-content: center;
 }
 
-/* .btn {
-    display: block;
-    font-size: 0.7rem;
-    font-weight: 400;
-    border-width: 0;
-    outline: none;
-    margin: 1rem auto;
-    padding: 0.4rem .65rem;
-    background-color: rgba(255, 255, 255, .7);
-    color:rgba(0, 0, 0, .95);
-    border-radius: 4px;
-    box-shadow: 2px 2px 4px rgba(0, 0, 0, .5),
-                inset 1px 1px 3px rgba(255, 255, 255, .95);
-    cursor: pointer;            
+p.error>span {
+    color: var(--orange);
+    font-size: 0.9rem;
+    letter-spacing: .7px;
+    text-shadow: 0 0 2px #000;
 }
-
-.btn:hover {
-    background-color: rgba(255, 255, 255, .55);
-} */
 
 .btn {
     position: relative; 
@@ -165,6 +152,7 @@ section.main .block-inputs {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 0;
+    margin: .8rem 0;
 }
 
 .block-inputs>input {
@@ -224,12 +212,14 @@ section.level-2 .block-inputs {
     margin: .8rem 0;
 }
 
+section.main p.error,
 section.level-2 p.error,
 section.level-3 p.error {
-    font-size: .8rem;
+    font-size: .85rem;
     color: red;
     text-align: center;
-    margin-top: 1rem;
+    margin-top: .5rem;
+    text-shadow: 0 0 2px #000;
 }
 
 /* LEVEL-3 */
