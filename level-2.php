@@ -2,11 +2,11 @@
 
 session_start();
 
-require_once('Helpers.php');
-require_once('Curl.php');
-
 use Helpers\Checker;
 use Helpers\Curl;
+
+require_once('Helpers.php');
+require_once('Curl.php');
 
 // Заголовок
 $title = 'Уровень №2';

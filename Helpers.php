@@ -16,6 +16,7 @@ class Checker
         }
 
         if($count_1 === 1) { return $result; }
+        if($count_2 === 1) { return $result; }
 
         if($count_1 !== 1) {
             $result[] = 'Слово <span>[' . $word_1 . ']</span> должно отличаться от вашего ровно на 1 символ!<br>Отличается на ' . $count_1;
@@ -43,4 +44,4 @@ class Checker
 
         return $result;
     }
-}
+};
